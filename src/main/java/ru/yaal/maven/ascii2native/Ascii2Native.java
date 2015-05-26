@@ -61,6 +61,7 @@ public final class Ascii2Native {
             }
             six = getSixChars(i, cs);
         }
+        sb.append(getLastChars(i, cs));
         return sb.toString();
     }
 
@@ -70,6 +71,11 @@ public final class Ascii2Native {
         }
         return s.substring(index, index + 6);
     }
+    private static String getLastChars(int index, String s) {
+        return s.length() > index ? s.substring(index) : "";
+    }
+
+
 
     public static void nativeToAscii(File src, File dst, String encoding)
             throws IOException {

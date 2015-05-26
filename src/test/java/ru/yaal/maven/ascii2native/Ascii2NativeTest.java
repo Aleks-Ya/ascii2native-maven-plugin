@@ -21,7 +21,6 @@
 package ru.yaal.maven.ascii2native;
 
 import junit.framework.TestCase;
-import ru.yaal.maven.ascii2native.Ascii2Native;
 
 public class Ascii2NativeTest
         extends TestCase {
@@ -31,7 +30,8 @@ public class Ascii2NativeTest
     public void test() {
         assertEquals(null, Ascii2Native.nativeToAscii(null));
         assertEquals(natives, Ascii2Native.nativeToAscii(ascii));
-//        assertEquals( "~", Native2Ascii.nativeToAscii( "\u007e" ) );
+        assertEquals("Привет, АБВГД!", Ascii2Native.nativeToAscii("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!"));
+        assertEquals( "~", Ascii2Native.nativeToAscii( "\u007e" ) );
     }
 
 }
