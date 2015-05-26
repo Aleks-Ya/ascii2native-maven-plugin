@@ -20,17 +20,6 @@
  */
 package ru.yaal.maven.ascii2native;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.CharBuffer;
-
 /**
  * @author Evgeny Mandrikov
  */
@@ -51,8 +40,8 @@ public final class Ascii2Native {
         int i = 0;
         String six = getSixChars(i, cs);
         while (six != null) {
-            Character c = Encoder.ascii2native(six);
-            if (c != null) {
+            if (six.startsWith("\\u")) {
+                Character c = ascii2native(six);
                 sb.append(c);
                 i = i + 6;
             } else {
@@ -71,39 +60,17 @@ public final class Ascii2Native {
         }
         return s.substring(index, index + 6);
     }
+
     private static String getLastChars(int index, String s) {
         return s.length() > index ? s.substring(index) : "";
     }
 
+    private static char ascii2native(String ascii) {
+        assert (ascii.length() == 6);
+        assert (ascii.startsWith("\\u"));
 
-
-    public static void nativeToAscii(File src, File dst, String encoding)
-            throws IOException {
-        BufferedReader input = null;
-        BufferedWriter output = null;
-        try {
-            input = new BufferedReader(new InputStreamReader(new FileInputStream(src), encoding));
-            output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dst), "US-ASCII"));
-
-            char[] buffer = new char[4096];
-            int len;
-            while ((len = input.read(buffer)) != -1) {
-                output.write(nativeToAscii(CharBuffer.wrap(buffer, 0, len)));
-            }
-        } finally {
-            closeQuietly(input);
-            closeQuietly(output);
-        }
+        String num = ascii.substring(2);
+        char c = (char) Integer.decode("#" + num).intValue();
+        return c;
     }
-
-    private static void closeQuietly(Closeable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                // ignore
-            }
-        }
-    }
-
 }
