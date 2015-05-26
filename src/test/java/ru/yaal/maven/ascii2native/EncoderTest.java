@@ -1,6 +1,7 @@
-package org.codehaus.mojo.native2ascii;
+package ru.yaal.maven.ascii2native;
 
 import junit.framework.TestCase;
+import ru.yaal.maven.ascii2native.Encoder;
 
 /**
  * @author yablokov a.

@@ -1,4 +1,4 @@
-package org.codehaus.mojo.native2ascii;
+package ru.yaal.maven.ascii2native;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
 public class Encoder {
     static String natives = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
     static Map map = new HashMap();
-
+//todo избавиться от map
     static {
         for (int i = 0; i < natives.length(); i++) {
             Character c = new Character(natives.charAt(i));

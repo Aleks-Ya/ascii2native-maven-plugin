@@ -1,124 +1,107 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <parent>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>mojo-parent</artifactId>
-    <version>28</version>
-    <relativePath>../mojo-parent/pom.xml</relativePath>
-  </parent>
+    <groupId>ru.yaal.maven</groupId>
+    <artifactId>ascii2native-maven-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
 
-  <artifactId>native2ascii-maven-plugin</artifactId>
-  <version>1.0-beta-1</version>
-  <packaging>maven-plugin</packaging>
+    <name>Ascii2Native Maven Plugin</name>
+    <description>Converts files with characters encoded with ASCII to native encoding.</description>
+    <inceptionYear>2015</inceptionYear>
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-  <name>Native2Ascii Maven Plugin</name>
-  <description>Converts files with characters in any supported character encoding to one with ASCII and/or Unicode escapes.</description>
-  <url>http://mojo.codehaus.org/native2ascii-maven-plugin/</url>
-  <inceptionYear>2007</inceptionYear>
-  <licenses>
-    <license>
-      <name>The MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-    <!--<properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+    <properties>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>-->
+        <mavenVersion>3.0.5</mavenVersion>
+    </properties>
 
-  <developers>
-    <developer>
-      <id>godin</id>
-      <name>Evgeny Mandrikov</name>
-      <email>mandrikov@gmail.com</email>
-      <timezone>+3</timezone>
-      <organization>SonarSource</organization>
-      <organizationUrl>http://sonarsource.com</organizationUrl>
-    </developer>
-    <developer>
-      <id>dantran</id>
-      <name>Dan Tran</name>
-      <email>dtran@gmail.com</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Martin Thelian</name>
-      <roles>
-        <role>Contributer</role>
-      </roles>
-    </developer>
-  </developers>
+    <developers>
+        <developer>
+            <id>yaal</id>
+            <name>Yablokov Aleksey</name>
+            <email>ya_al@bk.ru</email>
+            <timezone>+3</timezone>
+            <organization>Trans-IT</organization>
+            <organizationUrl>http://www.trans-it.ru</organizationUrl>
+        </developer>
+    </developers>
 
-  <prerequisites>
-    <maven>2.0.6</maven>
-  </prerequisites>
+    <prerequisites>
+        <maven>${mavenVersion}</maven>
+    </prerequisites>
 
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/tags/native2ascii-maven-plugin-1.0-beta-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/native2ascii-maven-plugin-1.0-beta-1</developerConnection>
-    <url>http://svn.codehaus.org/mojo/tags/native2ascii-maven-plugin-1.0-beta-1</url>
-  </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/Aleks-Ya/ascii2native-maven-plugin/issues</url>
+    </issueManagement>
 
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/MOJO/component/12536</url>
-  </issueManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${mavenVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${mavenVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-compat</artifactId>
+            <version>${mavenVersion}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
-      <version>2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.4</version>
+                <executions>
+                    <execution>
+                        <id>default-descriptor</id>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
-  <build>
-    <plugins>
-      <plugin>
-        <!-- To run with different Maven versions use -Dinvoker.mavenHome -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-invoker-plugin</artifactId>
-        <configuration>
-          <projectsDirectory>src/it</projectsDirectory>
-          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-          <pomIncludes>
-            <pomInclude>*/pom.xml</pomInclude>
-          </pomIncludes>
-          <postBuildHookScript>verify</postBuildHookScript>
-          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-          <goals>
-            <goal>clean</goal>
-            <goal>install</goal>
-          </goals>
-          <settingsFile>src/it/settings.xml</settingsFile>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <!-- Goal "install" causes failure of deployment - see http://jira.codehaus.org/browse/MINVOKER-107 -->
-              <goal>install</goal>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
+    <modelVersion>4.0.0</modelVersion>
 </project>
