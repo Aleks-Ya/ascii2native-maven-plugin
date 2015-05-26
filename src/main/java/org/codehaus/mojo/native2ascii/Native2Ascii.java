@@ -20,33 +20,37 @@
  */
 package org.codehaus.mojo.native2ascii;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.CharBuffer;
 
 /**
  * @author Evgeny Mandrikov
  */
-public final class Native2Ascii
-{
+public final class Native2Ascii {
 
-    private Native2Ascii()
-    {
+    private Native2Ascii() {
     }
 
     /**
      * Converts given CharSequence into ASCII String.
      */
-    public static String nativeToAscii( CharSequence csq )
-    {
-        if ( csq == null )
-        {
+    public static String nativeToAscii(CharSequence csq) {
+        if (csq == null) {
             return null;
         }
         StringBuilder sb = new StringBuilder();
         String cs = csq.toString();
         int i = 0;
         String six = getSixChars(i, cs);
-        while(six != null) {
+        while (six != null) {
             Character c = Encoder.ascii2native(six);
             if (c != null) {
                 sb.append(c);
@@ -67,40 +71,30 @@ public final class Native2Ascii
         return s.substring(index, index + 6);
     }
 
-    public static void nativeToAscii( File src, File dst, String encoding )
-        throws IOException
-    {
+    public static void nativeToAscii(File src, File dst, String encoding)
+            throws IOException {
         BufferedReader input = null;
         BufferedWriter output = null;
-        try
-        {
-            input = new BufferedReader( new InputStreamReader( new FileInputStream( src ), encoding ) );
-            output = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( dst ), "US-ASCII" ) );
+        try {
+            input = new BufferedReader(new InputStreamReader(new FileInputStream(src), encoding));
+            output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dst), "US-ASCII"));
 
             char[] buffer = new char[4096];
             int len;
-            while ( ( len = input.read( buffer ) ) != -1 )
-            {
-                output.write( nativeToAscii( CharBuffer.wrap( buffer, 0, len ) ) );
+            while ((len = input.read(buffer)) != -1) {
+                output.write(nativeToAscii(CharBuffer.wrap(buffer, 0, len)));
             }
-        }
-        finally
-        {
-            closeQuietly( input );
-            closeQuietly( output );
+        } finally {
+            closeQuietly(input);
+            closeQuietly(output);
         }
     }
 
-    private static void closeQuietly( Closeable closeable )
-    {
-        if ( closeable != null )
-        {
-            try
-            {
+    private static void closeQuietly(Closeable closeable) {
+        if (closeable != null) {
+            try {
                 closeable.close();
-            }
-            catch ( IOException e )
-            {
+            } catch (IOException e) {
                 // ignore
             }
         }

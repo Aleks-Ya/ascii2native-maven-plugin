@@ -20,27 +20,28 @@
  */
 package org.codehaus.mojo.native2ascii;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.Iterator;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+
 /**
  * Converts files with characters in any supported character encoding to one with ASCII and/or Unicode escapes.
- * 
+ *
  * @goal native2ascii
  * @phase process-classes
  */
 public class Native2AsciiMojo
-    extends AbstractMojo
-{
+        extends AbstractMojo {
     /**
      * The directory to find files in.
-     * 
+     *
      * @parameter default-value="${project.build.outputDirectory}"
      * @since 1.0-alpha-2
      */
@@ -48,7 +49,7 @@ public class Native2AsciiMojo
 
     /**
      * Directory for temporary files.
-     * 
+     *
      * @parameter default-value="${project.build.directory}
      * @since 1.0-alpha-2
      */
@@ -56,7 +57,7 @@ public class Native2AsciiMojo
 
     /**
      * The native encoding the files are in.
-     * 
+     *
      * @parameter default-value="${project.build.sourceEncoding}"
      * @since 1.0-alpha-1
      */
@@ -64,7 +65,7 @@ public class Native2AsciiMojo
 
     /**
      * Patterns of files that must be included. Default is "**\/*.properties".
-     * 
+     *
      * @parameter
      * @since 1.0-alpha-2
      */
@@ -72,63 +73,51 @@ public class Native2AsciiMojo
 
     /**
      * Patterns of files that must be excluded.
-     * 
+     *
      * @parameter
      * @since 1.0-alpha-2
      */
     protected String[] excludes;
 
     public void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
-        if ( !workDir.exists() )
-        {
+            throws MojoExecutionException, MojoFailureException {
+        if (!workDir.exists()) {
             return;
         }
 
-        if ( StringUtils.isEmpty( encoding ) )
-        {
-            encoding = System.getProperty( "file.encoding" );
-            getLog().warn( "Using platform encoding (" + encoding + " actually) to convert resources!" );
+        if (StringUtils.isEmpty(encoding)) {
+            encoding = System.getProperty("file.encoding");
+            getLog().warn("Using platform encoding (" + encoding + " actually) to convert resources!");
         }
 
-        if ( includes == null || includes.length == 0 )
-        {
-            includes = new String[] { "**/*.properties" };
+        if (includes == null || includes.length == 0) {
+            includes = new String[]{"**/*.properties"};
         }
-        if ( excludes == null )
-        {
+        if (excludes == null) {
             excludes = new String[0];
         }
 
         Iterator files;
-        try
-        {
-            getLog().info( "Includes: " + Arrays.asList( includes ) );
-            getLog().info( "Excludes: " + Arrays.asList( excludes ) );
-            String incl = StringUtils.join( includes, "," );
-            String excl = StringUtils.join( excludes, "," );
-            files = FileUtils.getFiles( workDir, incl, excl ).iterator();
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Unable to get list of files" );
+        try {
+            getLog().info("Includes: " + Arrays.asList(includes));
+            getLog().info("Excludes: " + Arrays.asList(excludes));
+            String incl = StringUtils.join(includes, ",");
+            String excl = StringUtils.join(excludes, ",");
+            files = FileUtils.getFiles(workDir, incl, excl).iterator();
+        } catch (IOException e) {
+            throw new MojoExecutionException("Unable to get list of files");
         }
 
-        while ( files.hasNext() )
-        {
+        while (files.hasNext()) {
             File file = (File) files.next();
-            getLog().info( "Processing " + file.getAbsolutePath() );
-            try
-            {
+            getLog().info("Processing " + file.getAbsolutePath());
+            try {
                 // Convert file in-place
-                File tempFile = File.createTempFile( file.getName(), "native2ascii", tempDir );
-                Native2Ascii.nativeToAscii( file, tempFile, encoding );
-                FileUtils.rename( tempFile, file );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "Unable to convert " + file.getAbsolutePath(), e );
+                File tempFile = File.createTempFile(file.getName(), "native2ascii", tempDir);
+                Native2Ascii.nativeToAscii(file, tempFile, encoding);
+                FileUtils.rename(tempFile, file);
+            } catch (IOException e) {
+                throw new MojoExecutionException("Unable to convert " + file.getAbsolutePath(), e);
             }
         }
     }
