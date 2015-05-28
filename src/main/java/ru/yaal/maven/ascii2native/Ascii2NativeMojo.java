@@ -26,24 +26,22 @@ public class Ascii2NativeMojo extends AbstractMojo {
     public static final String MOJO_NAME = "ascii2native";
 
     @Parameter(property = "ascii2native.folder", required = true)
-    private String folder;
+    private File folder;
 
     //todo add recursive parameter
 
     @Parameter(property = "ascii2native.includes", defaultValue = "*.properties")
-    //todo не работает defaultValue
     private String[] includes;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        File dir = new File(folder);
-        if (!dir.exists()) {
-            throw new MojoExecutionException("Folder isn't exist: " + dir);
+        if (!folder.exists()) {
+            throw new MojoExecutionException("Folder isn't exist: " + folder);
         }
 
         WildcardFileFilter fileFilter = new WildcardFileFilter(includes);
         IOFileFilter dirFileFilter = DirectoryFileFilter.INSTANCE;
-        Collection<File> files = FileUtils.listFiles(dir, fileFilter, dirFileFilter);
+        Collection<File> files = FileUtils.listFiles(folder, fileFilter, dirFileFilter);
         getLog().info("Found " + files.size() + " files.");
         try {
             for (File file : files) {
