@@ -33,6 +33,8 @@ public class Ascii2NativeMojo extends AbstractMojo {
     @Parameter(property = "ascii2native.includes", defaultValue = "*.properties")
     private String[] includes;
 
+    //todo add log lever parameter
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!folder.exists()) {
@@ -45,7 +47,7 @@ public class Ascii2NativeMojo extends AbstractMojo {
         getLog().info("Found " + files.size() + " files.");
         try {
             for (File file : files) {
-                getLog().info("Process file: " + file.getAbsolutePath());
+                getLog().debug("Process file: " + file.getAbsolutePath());
                 Path path = file.toPath();
                 List<String> lines = Files.readAllLines(path);
                 for (int i = 0; i < lines.size(); i++) {
@@ -55,6 +57,7 @@ public class Ascii2NativeMojo extends AbstractMojo {
                 }
                 Files.write(path, lines, Charset.defaultCharset());
             }
+            getLog().info("Ascii2Native: processed " + files.size() + " files.");
         } catch (IOException e) {
             throw new MojoExecutionException("Can't process file", e);
         }
