@@ -3,7 +3,7 @@
 
     <groupId>ru.yaal.maven</groupId>
     <artifactId>ascii2native-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.3</version>
     <packaging>maven-plugin</packaging>
 
     <name>Ascii2Native Maven Plugin</name>

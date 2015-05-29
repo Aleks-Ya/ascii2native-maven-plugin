@@ -25,12 +25,12 @@ import java.util.List;
 public class Ascii2NativeMojo extends AbstractMojo {
     public static final String MOJO_NAME = "ascii2native";
 
-    @Parameter(property = "ascii2native.folder", required = true)
+    @Parameter
     private File folder;
 
     //todo add recursive parameter
 
-    @Parameter(property = "ascii2native.includes", defaultValue = "*.properties")
+    @Parameter(defaultValue = "*.properties")
     private String[] includes;
 
     //todo add log lever parameter
