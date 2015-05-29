@@ -9,11 +9,12 @@
     <name>Ascii2Native Maven Plugin</name>
     <description>Converts files with characters encoded with ASCII to native encoding.</description>
     <inceptionYear>2015</inceptionYear>
+    <url>https://github.com/Aleks-Ya/ascii2native-maven-plugin</url>
+
     <licenses>
         <license>
-            <name>The MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-            <distribution>repo</distribution>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
 
@@ -44,6 +45,12 @@
         <system>GitHub</system>
         <url>https://github.com/Aleks-Ya/ascii2native-maven-plugin/issues</url>
     </issueManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:Aleks-Ya/ascii2native-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:Aleks-Ya/ascii2native-maven-plugin.git</developerConnection>
+        <url>git@github.com:Aleks-Ya/ascii2native-maven-plugin.git</url>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -186,25 +193,6 @@
             </build>
         </profile>
     </profiles>
-
-    <!-- todo publish to maven central -->
-    <repositories>
-        <repository>
-            <id>vaadin-addons</id>
-            <url>http://maven.vaadin.com/vaadin-addons</url>
-        </repository>
-        <repository>
-            <id>loco-nexus</id>
-            <url>http://nexus.trs/nexus/content/repositories/thirdparty/</url>
-        </repository>
-        <repository>
-            <id>nexus-snapshot</id>
-            <url>http://nexus.trs/nexus/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <distributionManagement>
         <repository>
