@@ -25,20 +25,23 @@ import java.util.List;
 public class Ascii2NativeMojo extends AbstractMojo {
     public static final String MOJO_NAME = "ascii2native";
 
-    @Parameter
+    @Parameter(required = true)
     private File folder;
 
     //todo add recursive parameter
 
-    @Parameter(defaultValue = "*.properties")
+    @Parameter(required = true)
     private String[] includes;
 
     //todo add log lever parameter
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (!folder.exists()) {
+        if (folder == null || !folder.exists()) {
             throw new MojoExecutionException("Folder isn't exist: " + folder);
+        }
+        if (includes == null || includes.length == 0) {
+            throw new MojoExecutionException("Includes aren't specified.");
         }
 
         WildcardFileFilter fileFilter = new WildcardFileFilter(includes);
