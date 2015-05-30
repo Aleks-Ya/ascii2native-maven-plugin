@@ -31,8 +31,12 @@ public class Ascii2NativeMojoTest {
     @Test
     public void test() throws Exception {
         File tmpDir = Files.createTempDir();
-        File procesFile = new File(tmpDir, "a.html");
-        Files.write("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!", procesFile, Charset.forName("UTF-8"));
+
+        File fileWithAscii = new File(tmpDir, "ascii.html");
+        Files.write("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!", fileWithAscii, Charset.forName("UTF-8"));
+
+        File fileWithoutAscii = new File(tmpDir, "no_ascii.html");
+        Files.write("До встречи!", fileWithoutAscii, Charset.forName("UTF-8"));
 
         File pom = new File(Ascii2NativeMojoTest.class.getResource("correct_pom.xml").getFile());
         File tmpPom = File.createTempFile("tmp-", "-pom.xml");
@@ -44,6 +48,6 @@ public class Ascii2NativeMojoTest {
         assertNotNull(mojo);
         mojo.execute();
 
-        assertEquals("Привет, АБВГД!", FileUtils.readFileToString(procesFile).trim());
+        assertEquals("Привет, АБВГД!", FileUtils.readFileToString(fileWithAscii).trim());
     }
 }
