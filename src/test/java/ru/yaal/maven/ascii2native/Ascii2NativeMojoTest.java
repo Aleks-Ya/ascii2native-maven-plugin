@@ -49,5 +49,6 @@ public class Ascii2NativeMojoTest {
         mojo.execute();
 
         assertEquals("Привет, АБВГД!", FileUtils.readFileToString(fileWithAscii).trim());
+        assertEquals("До встречи!", FileUtils.readFileToString(fileWithoutAscii).trim());
     }
 }
