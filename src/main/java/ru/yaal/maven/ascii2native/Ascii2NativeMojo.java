@@ -53,12 +53,18 @@ public class Ascii2NativeMojo extends AbstractMojo {
                 getLog().debug("Process file: " + file.getAbsolutePath());
                 Path path = file.toPath();
                 List<String> lines = Files.readAllLines(path);
+                boolean containsAscii = false;
                 for (int i = 0; i < lines.size(); i++) {
                     String line = lines.get(i);
-                    lines.remove(i);
-                    lines.add(i, Ascii2Native.nativeToAscii(line));
+                    if (line.contains("\\u")) {
+                        lines.remove(i);
+                        lines.add(i, Ascii2Native.nativeToAscii(line));
+                        containsAscii = true;
+                    }
                 }
-                Files.write(path, lines, Charset.defaultCharset());
+                if (containsAscii) {
+                    Files.write(path, lines, Charset.defaultCharset());
+                }
             }
             getLog().info("Ascii2Native: processed " + files.size() + " files.");
         } catch (IOException e) {
