@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
 @Mojo(name = Ascii2NativeMojo.MOJO_NAME)
 public class Ascii2NativeMojo extends AbstractMojo {
     public static final String MOJO_NAME = "ascii2native";
+    private static final String LOG_PREFIX = "Ascii2Native: ";
 
     @Parameter(required = true)
     private File folder;
@@ -37,20 +39,26 @@ public class Ascii2NativeMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        long startDate = System.currentTimeMillis();
         if (folder == null || !folder.exists()) {
-            throw new MojoExecutionException("Folder isn't exist: " + folder);
+            throw new MojoExecutionException(LOG_PREFIX + "Folder isn't exist: " + folder);
         }
+        getLog().info(LOG_PREFIX + "Process folder: " + folder.getAbsolutePath());
+
         if (includes == null || includes.length == 0) {
-            throw new MojoExecutionException("Includes aren't specified.");
+            throw new MojoExecutionException(LOG_PREFIX + "Includes aren't specified.");
         }
+        getLog().info(LOG_PREFIX + "Include masks: " + Arrays.deepToString(includes));
 
         WildcardFileFilter fileFilter = new WildcardFileFilter(includes);
         IOFileFilter dirFileFilter = DirectoryFileFilter.INSTANCE;
         Collection<File> files = FileUtils.listFiles(folder, fileFilter, dirFileFilter);
-        getLog().info("Found " + files.size() + " files.");
+        getLog().info(LOG_PREFIX + "Found files: " + files.size());
         try {
+            int filesWrote = 0;
+            int filesSkipped = 0;
             for (File file : files) {
-                getLog().debug("Process file: " + file.getAbsolutePath());
+                getLog().debug(LOG_PREFIX + "Start file processing: " + file.getAbsolutePath());
                 Path path = file.toPath();
                 List<String> lines = Files.readAllLines(path);
                 boolean containsAscii = false;
@@ -64,11 +72,20 @@ public class Ascii2NativeMojo extends AbstractMojo {
                 }
                 if (containsAscii) {
                     Files.write(path, lines, Charset.defaultCharset());
+                    filesWrote++;
+                    getLog().debug(LOG_PREFIX + "Write file: " + file.getAbsolutePath());
+                } else {
+                    filesSkipped++;
+                    getLog().debug(LOG_PREFIX + "Skip file without ASCII symbols: " + file.getAbsolutePath());
                 }
             }
-            getLog().info("Ascii2Native: processed " + files.size() + " files.");
+            getLog().info(LOG_PREFIX + "Wrote files: " + filesWrote);
+            getLog().info(LOG_PREFIX + "Skipped files: " + filesSkipped);
+            assert (files.size() == filesWrote + filesSkipped);
+            long finishDate = System.currentTimeMillis();
+            getLog().info(LOG_PREFIX + "Process time (milliseconds): " + (finishDate - startDate));
         } catch (IOException e) {
-            throw new MojoExecutionException("Can't process file", e);
+            throw new MojoExecutionException(LOG_PREFIX + "Can't process file", e);
         }
     }
 }
