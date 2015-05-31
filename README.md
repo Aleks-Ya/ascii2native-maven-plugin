@@ -12,7 +12,7 @@ Convert ASCII coded text files to native.
             <plugin>
                 <groupId>ru.yaal.maven</groupId>
                 <artifactId>ascii2native-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.2</version>
                 <configuration>
                     <folder>target/site</folder>
                     <includes>

@@ -20,6 +20,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * todo add recursive parameter
+ * todo accept folders array
+ * todo add file encoding parameter
+ *
  * @author Aleksey Yablokov.
  */
 @Mojo(name = Ascii2NativeMojo.MOJO_NAME)
@@ -30,12 +34,8 @@ public class Ascii2NativeMojo extends AbstractMojo {
     @Parameter(required = true)
     private File folder;
 
-    //todo add recursive parameter
-
     @Parameter(required = true)
     private String[] includes;
-
-    //todo add log lever parameter
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {

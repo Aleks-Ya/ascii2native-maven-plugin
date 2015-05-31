@@ -50,7 +50,6 @@ public final class Ascii2Native {
         assert (ascii.startsWith("\\u"));
 
         String num = ascii.substring(2);
-        char c = (char) Integer.decode("#" + num).intValue();
-        return c;
+        return (char) Integer.decode("#" + num).intValue();
     }
 }
