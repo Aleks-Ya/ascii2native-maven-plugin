@@ -26,10 +26,10 @@ import java.util.List;
 /**
  * todo add recursive parameter
  * todo accept folders array
- *
- * todo Fix: save file in the same encoding
+ * <p>
  * todo output file encoding in log
  * todo if can't read file - ignore it
+ * todo parameter - make backup
  *
  * @author Aleksey Yablokov.
  */
@@ -66,31 +66,37 @@ public class Ascii2NativeMojo extends AbstractMojo {
         try {
             int filesWrote = 0;
             int filesSkipped = 0;
+            int readError = 0;
             for (File file : files) {
                 getLog().debug(LOG_PREFIX + "Start file processing: " + file.getAbsolutePath());
                 Path path = file.toPath();
-                List<String> lines = readFileInAnyEncoding(path);
-                boolean containsAscii = false;
-                for (int i = 0; i < lines.size(); i++) {
-                    String line = lines.get(i);
-                    if (line.contains("\\u")) {
-                        lines.remove(i);
-                        lines.add(i, Ascii2Native.nativeToAscii(line));
-                        containsAscii = true;
+                FileInfo info = readFileInAnyEncoding(path);
+                if (!info.skip) {
+                    boolean containsAscii = false;
+                    for (int i = 0; i < info.lines.size(); i++) {
+                        String line = info.lines.get(i);
+                        if (line.contains("\\u")) {
+                            info.lines.remove(i);
+                            info.lines.add(i, Ascii2Native.nativeToAscii(line));
+                            containsAscii = true;
+                        }
                     }
-                }
-                if (containsAscii) {
-                    Files.write(path, lines, Charset.defaultCharset());
-                    filesWrote++;
-                    getLog().debug(LOG_PREFIX + "Write file: " + file.getAbsolutePath());
+                    if (containsAscii) {
+                        Files.write(path, info.lines, info.charset);
+                        filesWrote++;
+                        getLog().debug(LOG_PREFIX + "Write file: " + file.getAbsolutePath());
+                    } else {
+                        filesSkipped++;
+                        getLog().debug(LOG_PREFIX + "Skip file without ASCII symbols: " + file.getAbsolutePath());
+                    }
                 } else {
-                    filesSkipped++;
-                    getLog().debug(LOG_PREFIX + "Skip file without ASCII symbols: " + file.getAbsolutePath());
+                    readError++;
                 }
             }
             getLog().info(LOG_PREFIX + "Wrote files: " + filesWrote);
             getLog().info(LOG_PREFIX + "Skipped files: " + filesSkipped);
-            assert (files.size() == filesWrote + filesSkipped);
+            getLog().info(LOG_PREFIX + "Can't read files: " + readError);
+            assert (files.size() == filesWrote + filesSkipped + readError);
             long finishDate = System.currentTimeMillis();
             getLog().info(LOG_PREFIX + "Process time (milliseconds): " + (finishDate - startDate));
         } catch (IOException e) {
@@ -98,15 +104,21 @@ public class Ascii2NativeMojo extends AbstractMojo {
         }
     }
 
-    private List<String> readFileInAnyEncoding(Path path) throws IOException, MojoExecutionException {
+    private FileInfo readFileInAnyEncoding(Path path) throws IOException, MojoExecutionException {
+        FileInfo fileInfo = new FileInfo(path);
         for (Charset charset : charsetList) {
             try {
-                return Files.readAllLines(path, charset);
+                fileInfo.lines = Files.readAllLines(path, charset);
+                fileInfo.skip = false;
+                fileInfo.charset = charset;
+                return fileInfo;
             } catch (MalformedInputException e) {
                 getLog().warn(LOG_PREFIX + "Failed read file in charset " + charset.name() + ": " + path);
             }
         }
-        throw new MojoExecutionException(LOG_PREFIX + "Can't read file in any charset: " + path);
+        getLog().warn(LOG_PREFIX + "Can't read file in any charset (skip it): " + path);
+        fileInfo.skip = true;
+        return fileInfo;
     }
 
     private void checkCharsetsParameter() throws MojoExecutionException {
@@ -137,6 +149,17 @@ public class Ascii2NativeMojo extends AbstractMojo {
             throw new MojoExecutionException(LOG_PREFIX + "Folder isn't exist: " + folder);
         }
         getLog().info(LOG_PREFIX + "Process folder: " + folder.getAbsolutePath());
+    }
+
+    static class FileInfo {
+        public FileInfo(Path path) {
+            this.path = path;
+        }
+
+        Path path;
+        Charset charset;
+        List<String> lines;
+        boolean skip;
     }
 }
 

@@ -33,7 +33,8 @@ public class Ascii2NativeMojoTest {
         File folderDir = Files.createTempDir();
 
         File fileWithAscii = new File(folderDir, "ascii.html");
-        Files.write("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!", fileWithAscii, Charset.forName("windows-1251"));
+        Charset expCharset = Charset.forName("windows-1251");
+        Files.write("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!", fileWithAscii, expCharset);
 
         File fileWithoutAscii = new File(folderDir, "no_ascii.html");
         Files.write("До встречи!", fileWithoutAscii, Charset.forName("UTF-8"));
@@ -44,7 +45,7 @@ public class Ascii2NativeMojoTest {
         assertNotNull(mojo);
         mojo.execute();
 
-        assertEquals("Привет, АБВГД!", FileUtils.readFileToString(fileWithAscii).trim());
+        assertEquals("Привет, АБВГД!", FileUtils.readFileToString(fileWithAscii, expCharset).trim());
         assertEquals("До встречи!", FileUtils.readFileToString(fileWithoutAscii).trim());
     }
 

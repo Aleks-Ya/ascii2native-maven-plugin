@@ -3,6 +3,7 @@ package ru.yaal.maven.ascii2native;
 import com.google.common.io.Files;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.MojoRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -15,6 +16,7 @@ import static ru.yaal.maven.ascii2native.Helper.fillPomTemplate;
 /**
  * @author Aleksey Yablokov.
  */
+@Ignore("Behavior changed: skip read error files")
 public class WrongCharsetTest {
 
     @Rule
