@@ -27,6 +27,10 @@ import java.util.List;
  * todo add recursive parameter
  * todo accept folders array
  *
+ * todo Fix: save file in the same encoding
+ * todo output file encoding in log
+ * todo if can't read file - ignore it
+ *
  * @author Aleksey Yablokov.
  */
 @Mojo(name = Ascii2NativeMojo.MOJO_NAME)
