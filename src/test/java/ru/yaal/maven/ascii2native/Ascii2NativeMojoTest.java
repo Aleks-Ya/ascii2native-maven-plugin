@@ -30,25 +30,22 @@ public class Ascii2NativeMojoTest {
 
     @Test
     public void test() throws Exception {
-        File tmpDir = Files.createTempDir();
+        File folderDir = Files.createTempDir();
 
-        File fileWithAscii = new File(tmpDir, "ascii.html");
-        Files.write("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!", fileWithAscii, Charset.forName("UTF-8"));
+        File fileWithAscii = new File(folderDir, "ascii.html");
+        Files.write("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!", fileWithAscii, Charset.forName("windows-1251"));
 
-        File fileWithoutAscii = new File(tmpDir, "no_ascii.html");
+        File fileWithoutAscii = new File(folderDir, "no_ascii.html");
         Files.write("До встречи!", fileWithoutAscii, Charset.forName("UTF-8"));
 
-        File pom = new File(Ascii2NativeMojoTest.class.getResource("correct_pom.xml").getFile());
-        File tmpPom = File.createTempFile("tmp-", "-pom.xml");
-        String content = FileUtils.readFileToString(pom);
-        String replacedContent = content.replaceAll("\\[folder]", tmpDir.getAbsolutePath());
-        FileUtils.writeStringToFile(tmpPom, replacedContent);
+        File pom = Helper.fillPomTemplate(folderDir, new String[] {"UTF-8", "windows-1251"});
 
-        Ascii2NativeMojo mojo = (Ascii2NativeMojo) rule.lookupMojo(Ascii2NativeMojo.MOJO_NAME, tmpPom);
+        Ascii2NativeMojo mojo = (Ascii2NativeMojo) rule.lookupMojo(Ascii2NativeMojo.MOJO_NAME, pom);
         assertNotNull(mojo);
         mojo.execute();
 
         assertEquals("Привет, АБВГД!", FileUtils.readFileToString(fileWithAscii).trim());
         assertEquals("До встречи!", FileUtils.readFileToString(fileWithoutAscii).trim());
     }
+
 }
