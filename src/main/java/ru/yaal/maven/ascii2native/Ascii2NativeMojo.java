@@ -24,8 +24,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * todo parameter "make backup"
- * todo add recursive parameter
+ * todo add "make backup" parameter
+ * todo add "skip on error" parameter
+ * todo add "recursive" parameter
  * todo accept folders array
  *
  * @author Aleksey Yablokov.
