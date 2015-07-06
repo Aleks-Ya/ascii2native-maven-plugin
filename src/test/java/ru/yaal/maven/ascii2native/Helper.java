@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 class Helper {
     public static File fillPomTemplate(File folderDir, String[] charsets) throws IOException {
-        File pomTemplate = new File(WrongCharsetTest.class.getResource("correct_pom.xml").getFile());
+        File pomTemplate = new File(SkipWrongCharsetTest.class.getResource("correct_pom.xml").getFile());
         File pom = File.createTempFile("tmp-", "-pom.xml");
         String content = FileUtils.readFileToString(pomTemplate);
         content = insertFolder(folderDir, content);
