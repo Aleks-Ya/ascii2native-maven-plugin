@@ -12,13 +12,22 @@ Convert ASCII coded text files to native.
 ```
 
 ## Version history
+**Version 1.3.1**
+
+* Fix: save files in the same charset
+* Skip files produces IO errors (was exception)
+* Print file charset in log
+
 **Version 1.3**
+
 * Charsets support
 
 **Version 1.2**
+
 * Algorithm optimization
 
 **Version 1.1**
+
 * First version
 
 ## Example
