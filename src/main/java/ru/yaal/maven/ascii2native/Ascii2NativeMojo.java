@@ -27,7 +27,6 @@ import java.util.List;
  * todo add recursive parameter
  * todo accept folders array
  * <p>
- * todo output file encoding in log
  * todo if can't read file - ignore it
  * todo parameter - make backup
  *
@@ -84,7 +83,7 @@ public class Ascii2NativeMojo extends AbstractMojo {
                     if (containsAscii) {
                         Files.write(path, info.lines, info.charset);
                         filesWrote++;
-                        getLog().debug(LOG_PREFIX + "Write file: " + file.getAbsolutePath());
+                        getLog().debug(LOG_PREFIX + "Write file (" + info.charset.name() + "): " + file.getAbsolutePath());
                     } else {
                         filesSkipped++;
                         getLog().debug(LOG_PREFIX + "Skip file without ASCII symbols: " + file.getAbsolutePath());
