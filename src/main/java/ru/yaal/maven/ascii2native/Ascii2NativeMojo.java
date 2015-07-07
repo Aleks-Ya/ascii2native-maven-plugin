@@ -92,8 +92,8 @@ public class Ascii2NativeMojo extends AbstractMojo {
                 }
             }
             getLog().info(LOG_PREFIX + "Wrote files: " + filesWrote);
-            getLog().info(LOG_PREFIX + "Skipped files: " + filesSkipped);
-            getLog().info(LOG_PREFIX + "Can't read files: " + readError);
+            getLog().info(LOG_PREFIX + "Skipped files (no ascii symbols): " + filesSkipped);
+            getLog().info(LOG_PREFIX + "Skipped files (read error): " + readError);
             assert (files.size() == filesWrote + filesSkipped + readError);
             long finishDate = System.currentTimeMillis();
             getLog().info(LOG_PREFIX + "Process time (milliseconds): " + (finishDate - startDate));
