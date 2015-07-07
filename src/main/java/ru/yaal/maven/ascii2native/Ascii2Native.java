@@ -3,7 +3,7 @@ package ru.yaal.maven.ascii2native;
 /**
  * @author Aleksey Yablokov.
  */
-public final class Ascii2Native {
+final class Ascii2Native {
     private static final int ASCII_LENGTH = 6;
 
     private Ascii2Native() {

@@ -22,7 +22,7 @@ class Helper {
         return pom;
     }
 
-    public static String insertCharsets(String[] charsets, String content) {
+    private static String insertCharsets(String[] charsets, String content) {
         StringBuilder charsetInsert = new StringBuilder();
         if (charsets != null && charsets.length > 0) {
             charsetInsert.append("<charsets>");
@@ -37,17 +37,17 @@ class Helper {
         return content;
     }
 
-    public static String insertFolder(File folderDir, String content) {
+    private static String insertFolder(File folderDir, String content) {
         content = content.replaceAll("\\[folder]", folderDir.getAbsolutePath());
         return content;
     }
 
-    public static void assertStatistics(Ascii2NativeMojo mojo, int filesWrote, int filesSkipped, int readError)
+    public static void assertStatistics(Ascii2NativeMojo mojo, int filesWrote, int filesSkipped, int readErrors)
             throws NoSuchFieldException, IllegalAccessException {
 
         Field filesWroteField = mojo.getClass().getDeclaredField("filesWrote");
         Field filesSkippedField = mojo.getClass().getDeclaredField("filesSkipped");
-        Field readErrorField = mojo.getClass().getDeclaredField("readError");
+        Field readErrorsField = mojo.getClass().getDeclaredField("readErrors");
 
         if (!filesWroteField.isAccessible()) {
             filesWroteField.setAccessible(true);
@@ -55,12 +55,12 @@ class Helper {
         if (!filesSkippedField.isAccessible()) {
             filesSkippedField.setAccessible(true);
         }
-        if (!readErrorField.isAccessible()) {
-            readErrorField.setAccessible(true);
+        if (!readErrorsField.isAccessible()) {
+            readErrorsField.setAccessible(true);
         }
 
         assertEquals("Files wrote mismatch:", filesWrote, filesWroteField.getInt(mojo));
         assertEquals("Files skipped mismatch:", filesSkipped, filesSkippedField.getInt(mojo));
-        assertEquals("Read errors mismatch:", readError, readErrorField.getInt(mojo));
+        assertEquals("Read errors mismatch:", readErrors, readErrorsField.getInt(mojo));
     }
 }

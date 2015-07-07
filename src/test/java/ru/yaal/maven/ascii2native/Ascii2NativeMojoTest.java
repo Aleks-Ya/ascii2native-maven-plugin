@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 public class Ascii2NativeMojoTest {
 
     @Rule
-    public MojoRule rule = new MojoRule() {
+    public final MojoRule rule = new MojoRule() {
         @Override
         protected void before() throws Throwable {
         }

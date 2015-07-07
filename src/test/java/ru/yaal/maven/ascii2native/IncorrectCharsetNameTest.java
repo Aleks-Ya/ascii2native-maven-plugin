@@ -18,7 +18,7 @@ import static ru.yaal.maven.ascii2native.Helper.fillPomTemplate;
 public class IncorrectCharsetNameTest {
 
     @Rule
-    public MojoRule rule = new MojoRule() {
+    public final MojoRule rule = new MojoRule() {
         @Override
         protected void before() throws Throwable {
         }
@@ -29,7 +29,7 @@ public class IncorrectCharsetNameTest {
     };
 
     @Rule
-    public ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void test() throws Exception {

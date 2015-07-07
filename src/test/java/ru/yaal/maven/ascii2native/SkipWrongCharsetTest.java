@@ -16,7 +16,7 @@ import static ru.yaal.maven.ascii2native.Helper.fillPomTemplate;
 public class SkipWrongCharsetTest {
 
     @Rule
-    public MojoRule rule = new MojoRule() {
+    public final MojoRule rule = new MojoRule() {
         @Override
         protected void before() throws Throwable {
         }

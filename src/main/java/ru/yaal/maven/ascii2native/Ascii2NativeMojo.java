@@ -104,8 +104,8 @@ public class Ascii2NativeMojo extends AbstractMojo {
         }
     }
 
-    private FileInfo readFileInAnyEncoding(Path path) throws IOException, MojoExecutionException {
-        FileInfo fileInfo = new FileInfo(path);
+    private FileInfo readFileInAnyEncoding(Path path) throws IOException {
+        FileInfo fileInfo = new FileInfo();
         for (Charset charset : charsetList) {
             try {
                 fileInfo.lines = Files.readAllLines(path, charset);
@@ -152,11 +152,6 @@ public class Ascii2NativeMojo extends AbstractMojo {
     }
 
     static class FileInfo {
-        public FileInfo(Path path) {
-            this.path = path;
-        }
-
-        Path path;
         Charset charset;
         List<String> lines;
         boolean skip;
