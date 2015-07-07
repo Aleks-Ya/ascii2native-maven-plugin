@@ -7,9 +7,13 @@ Convert ASCII coded text files to native.
 <dependency>
     <groupId>ru.yaal.maven</groupId>
     <artifactId>ascii2native-maven-plugin</artifactId>
-    <version>1.3</version>
+    <version>1.3.1</version>
 </dependency>
 ```
+
+## Requirements
+* Java 1.7 or higher
+* Maven 3.3.3 or higher
 
 ## Version history
 **Version 1.3.1**
@@ -41,7 +45,7 @@ Convert ASCII coded text files to native.
             <plugin>
                 <groupId>ru.yaal.maven</groupId>
                 <artifactId>ascii2native-maven-plugin</artifactId>
-                <version>1.3</version>
+                <version>1.3.1</version>
                 <configuration>
                     <folder>target/site</folder>
                     <includes>
