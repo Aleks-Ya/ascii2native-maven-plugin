@@ -113,7 +113,7 @@ public class Ascii2NativeMojo extends AbstractMojo {
                 fileInfo.charset = charset;
                 return fileInfo;
             } catch (MalformedInputException e) {
-                getLog().warn(LOG_PREFIX + "Failed read file in charset " + charset.name() + ": " + path);
+                getLog().debug(LOG_PREFIX + "Failed read file in charset " + charset.name() + ": " + path);
             }
         }
         getLog().warn(LOG_PREFIX + "Can't read file in any charset (skip it): " + path);
