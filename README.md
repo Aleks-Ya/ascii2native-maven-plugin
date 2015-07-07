@@ -1,6 +1,21 @@
 # ascii2native-maven-plugin
 Convert ASCII coded text files to native.
 
+## Output example
+
+```
+[INFO] --- ascii2native-maven-plugin:1.4-SNAPSHOT:ascii2native (ascii2native) @ express-api ---
+[INFO] Ascii2Native: Process folder: /home/aleks/projects/trans_it/express/express-api/target/site
+[INFO] Ascii2Native: Include masks: [*.html]
+[INFO] Ascii2Native: Charsets: [UTF-8, windows-1251, ISO-8859-5]
+[INFO] Ascii2Native: Found files: 1195
+[INFO] Ascii2Native: Wrote files: 233
+[INFO] Ascii2Native: Skipped files (no ascii symbols): 962
+[INFO] Ascii2Native: Skipped files (read error): 0
+[INFO] Ascii2Native: Process time (milliseconds): 596
+[INFO] ------------------------------------------------------------------------
+```
+
 ## Maven dependency
 
 ```
