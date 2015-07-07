@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
  */
 class Helper {
     public static File fillPomTemplate(File folderDir, String[] charsets) throws IOException {
-        File pomTemplate = new File(SkipWrongCharsetTest.class.getResource("correct_pom.xml").getFile());
+        File pomTemplate = new File(SkipWrongCharsetTest.class.getResource("pom_template.xml").getFile());
         File pom = File.createTempFile("tmp-", "-pom.xml");
         String content = FileUtils.readFileToString(pomTemplate);
         content = insertFolder(folderDir, content);
