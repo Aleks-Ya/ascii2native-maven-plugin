@@ -3,14 +3,14 @@ package ru.yaal.maven.ascii2native;
 /**
  * @author Aleksey Yablokov.
  */
-final class Ascii2Native {
+final class Converter {
     private static final int ASCII_LENGTH = 6;
 
-    private Ascii2Native() {
+    private Converter() {
     }
 
     /**
-     * Converts given CharSequence into ASCII String.
+     * Converts given String into ASCII String.
      */
     public static String nativeToAscii(String cs) {
         if (cs == null) {

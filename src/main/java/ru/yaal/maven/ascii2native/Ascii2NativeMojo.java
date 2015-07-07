@@ -77,17 +77,19 @@ public class Ascii2NativeMojo extends AbstractMojo {
                         String line = info.lines.get(i);
                         if (line.contains("\\u")) {
                             info.lines.remove(i);
-                            info.lines.add(i, Ascii2Native.nativeToAscii(line));
+                            info.lines.add(i, Converter.nativeToAscii(line));
                             containsAscii = true;
                         }
                     }
                     if (containsAscii) {
                         Files.write(path, info.lines, info.charset);
                         filesWrote++;
-                        getLog().debug(LOG_PREFIX + "Write file (" + info.charset.name() + "): " + file.getAbsolutePath());
+                        getLog().debug(LOG_PREFIX + "Write file (" + info.charset.name() + "): "
+                                + file.getAbsolutePath());
                     } else {
                         filesSkipped++;
-                        getLog().debug(LOG_PREFIX + "Skip file without ASCII symbols: " + file.getAbsolutePath());
+                        getLog().debug(LOG_PREFIX + "Skip file without ASCII symbols: "
+                                + file.getAbsolutePath());
                     }
                 } else {
                     readErrors++;
