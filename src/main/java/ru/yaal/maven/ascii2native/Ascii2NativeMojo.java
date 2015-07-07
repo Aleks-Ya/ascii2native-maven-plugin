@@ -50,6 +50,10 @@ public class Ascii2NativeMojo extends AbstractMojo {
     private String[] charsets;
     private final List<Charset> charsetList = new ArrayList<>();
 
+    private int filesWrote = 0;
+    private int filesSkipped = 0;
+    private int readErrors = 0;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         long startDate = System.currentTimeMillis();
@@ -63,9 +67,6 @@ public class Ascii2NativeMojo extends AbstractMojo {
         Collection<File> files = FileUtils.listFiles(folder, fileFilter, dirFileFilter);
         getLog().info(LOG_PREFIX + "Found files: " + files.size());
         try {
-            int filesWrote = 0;
-            int filesSkipped = 0;
-            int readError = 0;
             for (File file : files) {
                 getLog().debug(LOG_PREFIX + "Start file processing: " + file.getAbsolutePath());
                 Path path = file.toPath();
@@ -89,13 +90,13 @@ public class Ascii2NativeMojo extends AbstractMojo {
                         getLog().debug(LOG_PREFIX + "Skip file without ASCII symbols: " + file.getAbsolutePath());
                     }
                 } else {
-                    readError++;
+                    readErrors++;
                 }
             }
             getLog().info(LOG_PREFIX + "Wrote files: " + filesWrote);
             getLog().info(LOG_PREFIX + "Skipped files (no ascii symbols): " + filesSkipped);
-            getLog().info(LOG_PREFIX + "Skipped files (read error): " + readError);
-            assert (files.size() == filesWrote + filesSkipped + readError);
+            getLog().info(LOG_PREFIX + "Skipped files (read error): " + readErrors);
+            assert files.size() == filesWrote + filesSkipped + readErrors;
             long finishDate = System.currentTimeMillis();
             getLog().info(LOG_PREFIX + "Process time (milliseconds): " + (finishDate - startDate));
         } catch (IOException e) {

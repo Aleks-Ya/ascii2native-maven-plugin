@@ -37,5 +37,7 @@ public class SkipWrongCharsetTest {
 
         Ascii2NativeMojo mojo = (Ascii2NativeMojo) rule.lookupMojo(Ascii2NativeMojo.MOJO_NAME, pom);
         mojo.execute();
+
+        Helper.assertStatistics(mojo, 0, 0, 1);
     }
 }

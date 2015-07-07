@@ -4,6 +4,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Aleksey Yablokov.
@@ -37,5 +40,27 @@ class Helper {
     public static String insertFolder(File folderDir, String content) {
         content = content.replaceAll("\\[folder]", folderDir.getAbsolutePath());
         return content;
+    }
+
+    public static void assertStatistics(Ascii2NativeMojo mojo, int filesWrote, int filesSkipped, int readError)
+            throws NoSuchFieldException, IllegalAccessException {
+
+        Field filesWroteField = mojo.getClass().getDeclaredField("filesWrote");
+        Field filesSkippedField = mojo.getClass().getDeclaredField("filesSkipped");
+        Field readErrorField = mojo.getClass().getDeclaredField("readError");
+
+        if (!filesWroteField.isAccessible()) {
+            filesWroteField.setAccessible(true);
+        }
+        if (!filesSkippedField.isAccessible()) {
+            filesSkippedField.setAccessible(true);
+        }
+        if (!readErrorField.isAccessible()) {
+            readErrorField.setAccessible(true);
+        }
+
+        assertEquals("Files wrote mismatch:", filesWrote, filesWroteField.getInt(mojo));
+        assertEquals("Files skipped mismatch:", filesSkipped, filesSkippedField.getInt(mojo));
+        assertEquals("Read errors mismatch:", readError, readErrorField.getInt(mojo));
     }
 }
