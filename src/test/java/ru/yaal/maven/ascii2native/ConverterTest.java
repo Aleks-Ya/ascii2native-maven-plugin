@@ -13,21 +13,21 @@ public class ConverterTest {
 
     @Test
     public void testNull() {
-        assertEquals(null, Converter.nativeToAscii(null));
+        assertEquals(null, Converter.ascii2Native(null));
     }
 
     @Test
     public void russianAlphabet() {
-        assertEquals(natives, Converter.nativeToAscii(ascii));
+        assertEquals(natives, Converter.ascii2Native(ascii));
     }
 
     @Test
     public void punctuationMarks() {
-        assertEquals("Привет, АБВГД!", Converter.nativeToAscii("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!"));
+        assertEquals("Привет, АБВГД!", Converter.ascii2Native("Привет, \\u0410\\u0411\\u0412\\u0413\\u0414!"));
     }
 
     @Test
     public void tilde() {
-        assertEquals("~", Converter.nativeToAscii("\u007e"));
+        assertEquals("~", Converter.ascii2Native("\u007e"));
     }
 }

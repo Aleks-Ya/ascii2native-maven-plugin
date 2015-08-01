@@ -10,21 +10,24 @@ final class Converter {
     }
 
     /**
-     * Converts given String into ASCII String.
+     * Converts given ASCII string into native string.
+     *
+     * @param str String contains ASCII symbols.
+     * @return Native string.
      */
-    public static String nativeToAscii(String cs) {
-        if (cs == null) {
+    public static String ascii2Native(String str) {
+        if (str == null) {
             return null;
         }
         StringBuilder sb = new StringBuilder();
         int i = 0;
         int asciiIndex;
         do {
-            asciiIndex = cs.indexOf("\\u", i);
-            String noAscii = asciiIndex != -1 ? cs.substring(i, asciiIndex) : cs.substring(i, cs.length());
+            asciiIndex = str.indexOf("\\u", i);
+            String noAscii = asciiIndex != -1 ? str.substring(i, asciiIndex) : str.substring(i, str.length());
             sb.append(noAscii);
             i = i + noAscii.length();
-            String six = asciiIndex != -1 ? cs.substring(asciiIndex, asciiIndex + ASCII_LENGTH) : "";
+            String six = asciiIndex != -1 ? str.substring(asciiIndex, asciiIndex + ASCII_LENGTH) : "";
             sb.append(ascii2native(six));
             i = i + ASCII_LENGTH;
         } while (asciiIndex != -1);

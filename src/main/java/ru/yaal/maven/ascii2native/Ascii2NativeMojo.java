@@ -77,7 +77,7 @@ public class Ascii2NativeMojo extends AbstractMojo {
                         String line = info.lines.get(i);
                         if (line.contains("\\u")) {
                             info.lines.remove(i);
-                            info.lines.add(i, Converter.nativeToAscii(line));
+                            info.lines.add(i, Converter.ascii2Native(line));
                             containsAscii = true;
                         }
                     }
